@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
 
-const sequelize = new Sequelize(
+const database = new Sequelize(
     'bdPorto', //Name Db
     'root', //User Db
     'root12345', //Password Db
@@ -11,4 +11,4 @@ const sequelize = new Sequelize(
     }
 );
 
-export default sequelize;
+export default database;
