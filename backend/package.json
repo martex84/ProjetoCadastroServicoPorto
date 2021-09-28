@@ -1,0 +1,22 @@
+{
+  "name": "servidorporto",
+  "version": "1.0.0",
+  "description": "Servidor para trabalhar com o backend",
+  "main": "index.js",
+  "author": "Martex84",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "type": "module",
+
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mysql2": "^2.3.0",
+    "sequelize": "^6.6.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  }
+}
