@@ -148,19 +148,13 @@ async function deleteMovimentacao(jsonMovimentacao, id) {
 
     if (idMovimentacao === undefined) return undefined;
 
-    await movimentacoes.destroy({
+    const valorDestroy = await movimentacoes.destroy({
         where: {
             id: id
         }
     })
 
-    const valorDestroy = await movimentacoes.findByPk(id);//Irá verifica se foi apagador
-
-    console.log("\n");
-    console.log(valorDestroy);
-    console.log("\n");
-
-    if (valorDestroy !== null) return false;
+    if (valorDestroy !== 1) return false;
 
     return true;
 }
@@ -184,18 +178,17 @@ function converterData(data, hora) {
 }
 
 async function converterJson(jsonPrincipal) {
-    const tamanho = jsonPrincipal.length - 1;
-    let contagem = 0;
+
     let valorRetorno = [];
 
-    while (contagem <= tamanho) {
+    await jsonPrincipal.forEach(container => {
         const {
             dataValues
-        } = jsonPrincipal[contagem];
+        } = container;
 
         const {
             identidade
-        } = await clientesServices.getFindById(dataValues.identidadeCliente);
+        } = clientesServices.getFindById(dataValues.identidadeCliente);
 
         function templateData(base) {
             function verificaTamanhoNumero(data) { //Verifica se o numero tem apenas uma casa e atribui o zero antes dela
@@ -223,15 +216,10 @@ async function converterJson(jsonPrincipal) {
             dataTermino: templateData(dataValues.dataTermino).data,
             horaTermino: templateData(dataValues.dataTermino).hora,
         })
-
-        contagem++;
-
-    }
+    })
 
     return valorRetorno;
 }
-
-
 
 export {
     setMovimentaçao,
