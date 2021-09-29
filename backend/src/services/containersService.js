@@ -168,10 +168,6 @@ async function delateContainer(jsonContainer, id) {
         }
     })
 
-    console.log("\n");
-    console.log(delateContainer);
-    console.log("\n");
-
     if (delateContainer !== 1) return false;
 
     return true
