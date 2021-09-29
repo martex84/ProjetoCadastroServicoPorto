@@ -2,6 +2,7 @@ import { Router } from "express";
 import { resolve } from "path/posix";
 
 import * as movimentacoesServices from './services/movimentaçõesServices.js';
+import * as containersServices from './services/containersService.js'
 
 const routes = Router();
 
@@ -13,10 +14,30 @@ routes.get('/movimentacao', (req, res) => {
     })
 });
 
+routes.get('/containers', (req, res) => {
+    new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar       
+        resolve(
+            containersServices.getContainer(req.query)
+        );
+    }).then((resolve) => {
+        return res.json(resolve);
+    })
+});
+
 routes.post('/movimentacao', (req, res) => {
     new Promise((resolve, reject) => {
         resolve(
             movimentacoesServices.setMovimentaçao(req.body.data)
+        )
+    }).then((resolve) => {
+        return res.json(resolve);
+    })
+})
+
+routes.post('/containers', (req, res) => {
+    new Promise((resolve, reject) => {
+        resolve(
+            containersServices.setContainer(req.body.data)
         )
     }).then((resolve) => {
         return res.json(resolve);
@@ -37,6 +58,20 @@ routes.put('/movimentacao/:index', (req, res) => {
     })
 })
 
+routes.put('/containers/:index', (req, res) => {
+    new Promise((resolve, reject) => {
+        const {
+            index
+        } = req.params;
+
+        resolve(
+            containersServices.updateContainer(req.body.data, index)
+        )
+    }).then((resolve) => {
+        return res.json(resolve);
+    })
+})
+
 routes.delete('/movimentacao/:index', (req, res) => {
     new Promise((resolve, reject) => {
         const {
@@ -45,6 +80,26 @@ routes.delete('/movimentacao/:index', (req, res) => {
 
         resolve(
             movimentacoesServices.deleteMovimentacao(req.body.data, index)
+        )
+    }).then((resolve) => {
+        if (resolve === true) return res.json({
+            messagem: "Excluido com Sucesso!"
+        });
+
+        return res.json({
+            messagem: "Falha ao Excluir!"
+        });
+    })
+})
+
+routes.delete('/containers/:index', (req, res) => {
+    new Promise((resolve, reject) => {
+        const {
+            index
+        } = req.params;
+
+        resolve(
+            containersServices.delateContainer(req.body.data, index)
         )
     }).then((resolve) => {
         if (resolve === true) return res.json({
