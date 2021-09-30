@@ -73,6 +73,18 @@ async function getMovimentacao(jsonMovimentacao) {
             break;
 
         case 'Id':
+            const pesquisaId = await movimentacoes.findOne({
+                where: {
+                    id: valorRecebido.identidade
+                }
+            });
+
+            console.log(pesquisaId)
+
+            if (pesquisaId === null) return {
+                message: "Not Found!"
+            }
+
             tipoPesquisa = {
                 id: valorRecebido.identidade
             }
