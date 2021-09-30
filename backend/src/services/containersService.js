@@ -69,6 +69,8 @@ async function getContainer(jsonContainer) {
         }
     }
 
+
+
     switch (valorRecebido.tipo) {
         case 'Cliente':
             const perfilCliente = await clientesServices.getFindOne(valorRecebido.identidade);
@@ -102,7 +104,7 @@ async function getContainer(jsonContainer) {
     )
 }
 
-async function updateContainer(jsonContainer, id) {
+async function updateContainer(jsonContainer) {
     const arrayRetorno = [];
 
     const {
@@ -115,17 +117,16 @@ async function updateContainer(jsonContainer, id) {
 
     const perfilCliente = await clientesServices.getFindOne(identidadeCliente);
 
-    if (perfilCliente === undefined) return undefined;
+    if (perfilCliente === null) return { message: "Not Found!" };
 
     const resultadoNumeroContainer = await container.findOne({
         where: {
-            id: id,
             numeroContainer: numeroContainer,
-            identidadeCliente: identidadeCliente
+            identidadeCliente: perfilCliente.id
         }
     })
 
-    if (resultadoNumeroContainer === undefined) return undefined;
+    if (resultadoNumeroContainer === null) return { message: "Not Found!" };
 
     const updateContainer = await container.update({
         tipo: tipo,
@@ -133,20 +134,17 @@ async function updateContainer(jsonContainer, id) {
         categoria: categoria
     }, {
         where: {
-            id: id,
             numeroContainer: numeroContainer,
-            identidadeCliente: identidadeCliente
+            identidadeCliente: perfilCliente.id
         }
     })
 
-    if (updateContainer === undefined) return undefined;
+    if (updateContainer === 0) return false;
 
-    arrayRetorno.push(updateContainer);
-
-    return converterJson(arrayRetorno);
+    return true;
 }
 
-async function delateContainer(jsonContainer, id) {
+async function delateContainer(jsonContainer) {
     const {
         identidadeCliente,
         numeroContainer
@@ -154,21 +152,21 @@ async function delateContainer(jsonContainer, id) {
 
     const perfilCliente = await clientesServices.getFindOne(identidadeCliente);
 
-    if (perfilCliente === undefined) return undefined;
+    if (perfilCliente === null) return { message: "Not Found!" };
 
     const resultadoNumeroContainer = await container.findOne({
         where: {
-            id: id,
             numeroContainer: numeroContainer,
-            identidadeCliente: identidadeCliente
+            identidadeCliente: perfilCliente.id
         }
     })
 
-    if (resultadoNumeroContainer === undefined) return undefined;
+    if (resultadoNumeroContainer === null) return { message: "Not Found!" };
 
     const delateContainer = await container.destroy({
         where: {
-            id: id
+            numeroContainer: numeroContainer,
+            identidadeCliente: perfilCliente.id
         }
     })
 
@@ -180,7 +178,7 @@ async function delateContainer(jsonContainer, id) {
 async function converterJson(jsonContainer) {
     const valorRetorno = [];
 
-    const { identidade } = await clientesServices.getFindById(jsonContainer[0].dataValues.id);
+    const { identidade } = await clientesServices.getFindById(jsonContainer[0].dataValues.identidadeCliente);
 
     await jsonContainer.forEach((container) => {
 

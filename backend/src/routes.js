@@ -15,7 +15,7 @@ routes.get('/movimentacao', (req, res) => {
 });
 
 routes.get('/containers', (req, res) => {
-    new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar       
+    new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar   
         resolve(
             containersServices.getContainer(req.query)
         );
@@ -58,14 +58,10 @@ routes.put('/movimentacao/:index', (req, res) => {
     })
 })
 
-routes.put('/containers/:index', (req, res) => {
+routes.put('/containers', (req, res) => {
     new Promise((resolve, reject) => {
-        const {
-            index
-        } = req.params;
-
         resolve(
-            containersServices.updateContainer(req.body.data, index)
+            containersServices.updateContainer(req.body.data)
         )
     }).then((resolve) => {
         return res.json(resolve);
@@ -79,7 +75,7 @@ routes.delete('/movimentacao/:index', (req, res) => {
         } = req.params;
 
         resolve(
-            movimentacoesServices.deleteMovimentacao(req.body.data, index)
+            movimentacoesServices.deleteMovimentacao(req.body, index)
         )
     }).then((resolve) => {
         if (resolve === true) return res.json({
@@ -92,14 +88,10 @@ routes.delete('/movimentacao/:index', (req, res) => {
     })
 })
 
-routes.delete('/containers/:index', (req, res) => {
+routes.delete('/containers', (req, res) => {
     new Promise((resolve, reject) => {
-        const {
-            index
-        } = req.params;
-
         resolve(
-            containersServices.delateContainer(req.body.data, index)
+            containersServices.delateContainer(req.body)
         )
     }).then((resolve) => {
         if (resolve === true) return res.json({
