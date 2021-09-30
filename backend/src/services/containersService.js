@@ -89,13 +89,17 @@ async function getContainer(jsonContainer) {
             break;
     }
 
-    const getValorMovimentacao = await container.findAll({
+    const getValorConteiner = await container.findAll({
         where: tipoPesquisa //Irá procurar de acordo com o tipo informado pelo front end
     })
 
-    if (getValorMovimentacao[0] === undefined) return undefined
+    if (getValorConteiner[0] === undefined) return undefined
 
-    return converterJson(getValorMovimentacao);
+    return await converterJson(getValorConteiner).then(
+        (response) => {
+            return response;
+        }
+    )
 }
 
 async function updateContainer(jsonContainer, id) {
@@ -173,19 +177,20 @@ async function delateContainer(jsonContainer, id) {
     return true
 }
 
-function converterJson(jsonContainer) {
+async function converterJson(jsonContainer) {
     const valorRetorno = [];
 
-    jsonContainer.forEach(container => {
+    const { identidade } = await clientesServices.getFindById(jsonContainer[0].dataValues.id);
+
+    await jsonContainer.forEach((container) => {
 
         const {
             dataValues
         } = container;
 
         valorRetorno.push({
-            id: dataValues.id,
             numeroContainer: dataValues.numeroContainer,
-            identidadeCliente: dataValues.identidadeCliente,
+            identidadeCliente: identidade,
             tipo: dataValues.tipo,
             status: dataValues.status,
             categoria: dataValues.categoria

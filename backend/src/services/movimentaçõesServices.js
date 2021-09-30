@@ -79,8 +79,6 @@ async function getMovimentacao(jsonMovimentacao) {
                 }
             });
 
-            console.log(pesquisaId)
-
             if (pesquisaId === null) return {
                 message: "Not Found!"
             }
@@ -193,14 +191,14 @@ async function converterJson(jsonPrincipal) {
 
     let valorRetorno = [];
 
+    const {
+        identidade
+    } = await clientesServices.getFindById(jsonPrincipal[0].dataValues.identidadeCliente);
+
     await jsonPrincipal.forEach(container => {
         const {
             dataValues
         } = container;
-
-        const {
-            identidade
-        } = clientesServices.getFindById(dataValues.identidadeCliente);
 
         function templateData(base) {
             function verificaTamanhoNumero(data) { //Verifica se o numero tem apenas uma casa e atribui o zero antes dela
