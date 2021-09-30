@@ -1,23 +1,23 @@
 import React from "react";
 
-import '../../css/movimentacoes.css';
+import '../../css/conteiners.css';
 
-function ResultadoCompostoMovimentacao(objeto) {
+function ResultadoCompostoConteiner(objeto) {
 
     return (
         <>
             <div className="conteudoResultadoComposto">
                 <div className="componenteResultadoComposto conteudoIdResultadoComposto">
-                    {objeto.id}
+                    {objeto.numeroContainer}
                 </div>
                 <div className="componenteResultadoComposto">
-                    {objeto.dataInicio}
+                    {objeto.tipo}
                 </div>
                 <div className="componenteResultadoComposto">
-                    {objeto.dataTermino}
+                    {objeto.status}
                 </div>
                 <div className="componenteResultadoComposto">
-                    {objeto.tipoMovimentacao}
+                    {objeto.categoria}
                 </div>
 
             </div>
@@ -25,4 +25,4 @@ function ResultadoCompostoMovimentacao(objeto) {
     );
 }
 
-export default ResultadoCompostoMovimentacao;
+export default ResultadoCompostoConteiner;
