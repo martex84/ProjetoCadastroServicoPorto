@@ -122,7 +122,7 @@ async function updateMovimentacao(jsonMovimentacao, id) {
         }
     })
 
-    if (idMovimentacao === undefined) return undefined;
+    if (idMovimentacao === undefined) return { message: "Not Found!" };
 
     await movimentacoes.update({
         tipoMovimentacao: tipoMovimentacao,

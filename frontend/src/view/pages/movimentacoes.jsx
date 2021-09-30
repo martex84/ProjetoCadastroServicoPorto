@@ -88,6 +88,7 @@ function Movimentacoes() {
                 .then((response) => {
                     if (response.data.message !== undefined) return alert("Conteudo buscado não encontrado!")
 
+                    console.log(response.data.message)
                     const valor = { ...response.data };
 
                     setNumeroMovimentacao(valor[0].id);
@@ -110,9 +111,7 @@ function Movimentacoes() {
                     }
 
                 })
-                .catch((err) => {
-                    console.log("Erro: " + err);
-                });
+                .catch(() => alert("Falha ao realizar busca!"));
         }
     }
 
@@ -129,8 +128,8 @@ function Movimentacoes() {
         if (verificaObjetoEmBranco(objetoEnvio) === false) {
             api
                 .post("/movimentacao", { data: objetoEnvio })
-                .then((response) => console.log(response))
-                .catch(err => console.log(`Erro: ${err}`));
+                .then(() => alert("Valor salvo com sucesso!"))
+                .catch(() => alert("Falha ao salvar valor!"));
         }
 
     }
@@ -147,8 +146,10 @@ function Movimentacoes() {
 
         api
             .put(`/movimentacao/${numeroMovimentacao}`, { data: objetoEnvio })
-            .then((response) => console.log(response))
-            .catch(err => console.log(`Erro: ${err}`));
+            .then(() => {
+                alert("Update Realizado com Sucesso!")
+            })
+            .catch(() => alert("Falha ao realizar Update!"));
     }
 
     function deleteApiMovimentacao() {
@@ -158,8 +159,8 @@ function Movimentacoes() {
 
         api
             .delete(`/movimentacao/${numeroMovimentacao}`, { data: objetoEnvio })
-            .then((response) => console.log(response))
-            .catch(err => console.log(`Erro: ${err}`));
+            .then(() => alert("Movimentacao apagada com sucesso!"))
+            .catch(() => alert("Falha ao apagar movimentacao!"));
     }
 
     return (
