@@ -19,7 +19,7 @@ function Movimentacoes() {
     const [permisaoRetornoMovimentacao, setPermisaoRetornoMovimentacao] = useState(true);
     const [conteudoResultado, setConteudoResultado] = useState();
     const [opcaoTipoMovimentacao, setOpcaoTipoMovimentacao] = useState([
-        'Embarque', 'Descarga', 'Gate-In', 'Gate-Out', 'Reposicionamento', 'Pesagem', 'Scanner'
+        'Descarga', 'Embarque', 'Gate-In', 'Gate-Out', 'Pesagem', 'Reposicionamento', 'Scanner'
     ])
 
     useEffect(() => {
