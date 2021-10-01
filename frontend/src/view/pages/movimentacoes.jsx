@@ -29,23 +29,22 @@ function Movimentacoes() {
         }
     }, [retornoMovimentacao, permisaoRetornoMovimentacao])
 
-    function organizaOpcaoTipo(valor) {
-        let arrayRetorno = [valor];
+    function limparCampos() {
+        setNumeroMovimentacao("");
+        setTipoMovimentacao('Embarque');
+        setDataInicio("");
+        setHoraInicio("");
+        setDataTermino("");
+        setHoraTermino("");
 
-        opcaoTipoMovimentacao.forEach(opcao => {
-            if (opcao !== valor) arrayRetorno.push(opcao)
-        })
-
-        setOpcaoTipoMovimentacao(arrayRetorno);
     }
 
-    function criaObjetoRetornoComposto() {
+    function criaObjetoRetornoComposto() { //Cria um array de objeto
         const valor = []
         Object.keys(retornoMovimentacao).forEach(indice => {
             valor.push(ResutadoCompostoMovimentacao(retornoMovimentacao[indice]))
         })
         setConteudoResultado(valor);
-
     }
 
     function verificaObjetoEmBranco(objeto) {
@@ -88,27 +87,27 @@ function Movimentacoes() {
                 .then((response) => {
                     if (response.data.message !== undefined) return alert("Conteudo buscado não encontrado!")
 
-                    console.log(response.data.message)
                     const valor = { ...response.data };
+
+                    setConteudoResultado("")
 
                     setNumeroMovimentacao(valor[0].id);
                     setTipoMovimentacao(valor[0].tipoMovimentacao);
-                    organizaOpcaoTipo(valor[0].tipoMovimentacao); //Ira organizar as opções
                     setDataInicio(valor[0].dataInicio);
                     setHoraInicio(valor[0].horaInicio);
                     setDataTermino(valor[0].dataTermino);
                     setHoraTermino(valor[0].horaTermino);
 
-                    if (Object.keys(valor).length > 1) {
-                        let retornoObjeto = [];
-                        Object.keys(valor).forEach(index => {
-                            if (index !== 0) {
-                                retornoObjeto.push(valor[index]);
-                            }
-                        })
-                        setRetornoMovimentacao(retornoObjeto);
-                        setPermisaoRetornoMovimentacao(true);
-                    }
+                    let retornoObjeto = [];
+                    Object.keys(valor).forEach(index => {
+                        if (index !== 0) {
+                            retornoObjeto.push(valor[index]);
+                        }
+                    })
+                    setRetornoMovimentacao(retornoObjeto);
+                    setPermisaoRetornoMovimentacao(true);
+
+
 
                 })
                 .catch(() => alert("Falha ao realizar busca!"));
@@ -128,7 +127,13 @@ function Movimentacoes() {
         if (verificaObjetoEmBranco(objetoEnvio) === false) {
             api
                 .post("/movimentacao", { data: objetoEnvio })
-                .then(() => alert("Valor salvo com sucesso!"))
+                .then(() => {
+                    alert("Valor salvo com sucesso!");
+
+                    returnApiMovimentacao("Cliente");
+
+                    limparCampos();
+                })
                 .catch(() => alert("Falha ao salvar valor!"));
         }
 
@@ -146,8 +151,12 @@ function Movimentacoes() {
 
         api
             .put(`/movimentacao/${numeroMovimentacao}`, { data: objetoEnvio })
-            .then(() => {
-                alert("Update Realizado com Sucesso!")
+            .then((result) => {
+                if (result.data === false) return alert("Falha ao realizar Update!");
+
+                alert("Update Realizado com Sucesso!");
+
+                returnApiMovimentacao("Cliente");
             })
             .catch(() => alert("Falha ao realizar Update!"));
     }
@@ -159,7 +168,20 @@ function Movimentacoes() {
 
         api
             .delete(`/movimentacao/${numeroMovimentacao}`, { data: objetoEnvio })
-            .then(() => alert("Movimentacao apagada com sucesso!"))
+            .then((result) => {
+
+                if (result.data === false) return alert("Falha ao apagar movimentacao!");
+
+                alert("Movimentacao apagada com sucesso!");
+
+                if (conteudoResultado.length > 1) {
+                    returnApiMovimentacao("Cliente");
+                }
+                else {
+                    setConteudoResultado("");
+                    limparCampos();
+                }
+            })
             .catch(() => alert("Falha ao apagar movimentacao!"));
     }
 
@@ -191,7 +213,7 @@ function Movimentacoes() {
                     </div>
                     <div className="containerEdicaoSecundarioMovimentacao">
                         <label className="labelNomeEdicaoMovimentacao">Tipo Movimentação</label>
-                        <select className="inputTipoEdicaoMovimentacao semBorda" onChange={e => setTipoMovimentacao(e.target.value)} >
+                        <select className="inputTipoEdicaoMovimentacao semBorda" onChange={e => setTipoMovimentacao(e.target.value)} value={tipoMovimentacao}>
                             <option>{opcaoTipoMovimentacao[0]}</option>
                             <option>{opcaoTipoMovimentacao[1]}</option>
                             <option>{opcaoTipoMovimentacao[2]}</option>
