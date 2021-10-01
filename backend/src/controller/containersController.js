@@ -1,6 +1,6 @@
 import * as containersServices from '../services/containersService.js'
 
-async function retornGet(requisicao, res) {
+async function returnGet(requisicao, res) {
     return new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar
         resolve(
             containersServices.getContainer(requisicao)
@@ -10,7 +10,7 @@ async function retornGet(requisicao, res) {
     })
 }
 
-async function retornGetRelatorio(res) {
+async function returnGetRelatorio(res) {
     return new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar
         resolve(
             containersServices.getRelatorioImportacaoExportacao()
@@ -20,7 +20,7 @@ async function retornGetRelatorio(res) {
     });
 }
 
-async function retornPost(requisicao, res) {
+async function returnPost(requisicao, res) {
     return new Promise((resolve, reject) => {
         resolve(
             containersServices.setContainer(requisicao)
@@ -30,7 +30,7 @@ async function retornPost(requisicao, res) {
     })
 }
 
-async function retornPut(requisicao, res) {
+async function returnPut(requisicao, res) {
     return new Promise((resolve, reject) => {
         resolve(
             containersServices.updateContainer(requisicao)
@@ -40,7 +40,7 @@ async function retornPut(requisicao, res) {
     })
 }
 
-async function retornDelete(requisicao, res) {
+async function returnDelete(requisicao, res) {
     return new Promise((resolve, reject) => {
         resolve(
             containersServices.delateContainer(requisicao)
@@ -51,9 +51,9 @@ async function retornDelete(requisicao, res) {
 }
 
 export {
-    retornPut,
-    retornDelete,
-    retornGet,
-    retornGetRelatorio,
-    retornPost
+    returnPut,
+    returnDelete,
+    returnGet,
+    returnGetRelatorio,
+    returnPost
 }

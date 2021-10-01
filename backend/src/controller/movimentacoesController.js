@@ -1,6 +1,6 @@
 import * as movimentacoesServices from '../services/movimentacoesServices.js';
 
-async function retornGet(requisicao, res) {
+async function returnGet(requisicao, res) {
     return new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar       
         resolve(movimentacoesServices.getMovimentacao(requisicao));
     }).then((resolve) => {
@@ -8,7 +8,7 @@ async function retornGet(requisicao, res) {
     })
 }
 
-async function retornGetRelatorio(requisicao, res) {
+async function returnGetRelatorio(requisicao, res) {
     return new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar
         resolve(
             movimentacoesServices.getMovimentacaoRelatorio(requisicao)
@@ -18,7 +18,7 @@ async function retornGetRelatorio(requisicao, res) {
     })
 }
 
-async function retornPost(requisicao, res) {
+async function returnPost(requisicao, res) {
     return new Promise((resolve, reject) => {
         resolve(
             movimentacoesServices.setMovimentaçao(requisicao)
@@ -28,7 +28,7 @@ async function retornPost(requisicao, res) {
     })
 }
 
-async function retornPut(requisicao, params, res) {
+async function returnPut(requisicao, params, res) {
     return new Promise((resolve, reject) => {
         const {
             index
@@ -42,7 +42,7 @@ async function retornPut(requisicao, params, res) {
     })
 }
 
-async function retornDelete(requisicao, params, res) {
+async function returnDelete(requisicao, params, res) {
     return new Promise((resolve, reject) => {
         const {
             index
@@ -57,9 +57,9 @@ async function retornDelete(requisicao, params, res) {
 }
 
 export {
-    retornPut,
-    retornDelete,
-    retornGet,
-    retornGetRelatorio,
-    retornPost
+    returnPut,
+    returnDelete,
+    returnGet,
+    returnGetRelatorio,
+    returnPost
 }
