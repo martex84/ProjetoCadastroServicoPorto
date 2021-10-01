@@ -210,6 +210,8 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
                     }
                 })
 
+
+
                 if (movimentacaoResultado.length > 0) {
                     if (movimentacaoResultado.length > 1) {
                         movimentacaoResultado.map(valor => {
@@ -259,12 +261,6 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
 
                     }
                 }
-
-                let valorRetorno = {};
-
-                valorRetorno[`${listaTipoMovimentacao[contagemTipo]}`] = objetoCliente;
-
-                resultadoRelatorio.push(valorRetorno);
 
                 contagemTipo++;
             }
