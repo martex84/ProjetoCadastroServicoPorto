@@ -1,0 +1,88 @@
+/*
+
+    Seção Principal
+
+*/
+#sectionPrincipalHome {
+    margin: auto;
+    width: 700px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/*
+
+    Titulo Página
+
+*/
+
+#containerTituloHome {
+    width: 100%;
+    background-color: black;
+    padding: 20px;
+}
+
+#containerSubTituloHome {
+    padding: 20px 50px;
+}
+
+.tituloHome,
+.subtTituloHome {
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+/*
+
+    Container Movimentacao
+
+*/
+#containerConteudoMovimentacao {
+    width: 100%;
+    background-color: rgba(0, 180, 232, 0.3);
+    padding: 20px 50px;
+    border-width: 0 3px 3px 3px;
+    border-style: solid;
+    border-color: rgba(0, 180, 232, 0.15);
+
+
+}
+
+#containerBotoesHome {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.botaoFerramenta {
+    width: 500px;
+    height: 50px;
+    margin-top: 50px;
+    border-radius: 5px;
+    background-color: #d5d8dc;
+    border-width: 0;
+    cursor: pointer;
+}
+
+.botaoFerramenta:hover {
+    background-color: #4285f4;
+    color: #ffff
+}
+
+/*
+
+    Especializações
+
+*/
+.semMargin {
+    margin: 0;
+}
+
+.semBorda {
+    border-width: 0;
+}
