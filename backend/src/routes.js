@@ -14,6 +14,16 @@ routes.get('/movimentacao', (req, res) => {
     })
 });
 
+routes.get('/movimentacao/relatorio', (req, res) => {
+    new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar
+        resolve(
+            movimentacoesServices.getMovimentacaoRelatorio(req.query)
+        );
+    }).then((resolve) => {
+        return res.json(resolve);
+    })
+});
+
 routes.get('/containers', (req, res) => {
     new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar
         resolve(

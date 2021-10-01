@@ -94,6 +94,80 @@ async function getMovimentacao(jsonMovimentacao) {
     return converterJson(getValorMovimentacao);
 }
 
+async function getMovimentacaoRelatorio(jsonMovimentacao) {
+    const {
+        tipo
+    } = jsonMovimentacao;
+
+    let listaPerfilId = [];
+    let listaPerfilIdentidade = [];
+    let resultadoRelatorio = [];
+
+    switch (tipo) {
+        case 'Cliente':
+            const perfilCliente = await movimentacoes.findAll();
+
+            perfilCliente.map(valor => {
+                const id = valor.dataValues.identidadeCliente;
+
+                if (listaPerfilId.length === 0) listaPerfilId.push(id);
+
+                else {
+                    listaPerfilId.map(idPerfil => {
+                        if (id !== idPerfil) listaPerfilId.push(id);
+                    })
+                }
+            })
+
+            let contagemIdentidade = 0;
+
+            while (contagemIdentidade < listaPerfilId.length) {
+
+                const valor = await clientesServices.getFindById(listaPerfilId[0])
+
+                listaPerfilIdentidade.push(valor.identidade)
+
+                contagemIdentidade++;
+            }
+
+            contagemIdentidade = 0;
+
+            while (contagemIdentidade < listaPerfilIdentidade.length) {
+                const movimentacaoResultado = await movimentacoes.findAll({
+                    where: {
+                        identidadeCliente: listaPerfilId[contagemIdentidade]
+                    }
+                })
+
+                const {
+                    tipoMovimentacao,
+                    dataInicio,
+                    dataTermino,
+                } = movimentacaoResultado[contagemIdentidade];
+
+                const objetoCliente = {
+                    identidadeCliente: listaPerfilIdentidade[contagemIdentidade],
+                    tipoMovimentacao: tipoMovimentacao,
+                    dataInicio: templateData(dataInicio).data,
+                    horaInicio: templateData(dataInicio).hora,
+                    dataTermino: templateData(dataTermino).data,
+                    horaTermino: templateData(dataTermino).hora,
+                }
+
+                resultadoRelatorio.push(objetoCliente)
+
+                contagemIdentidade++;
+            }
+            break;
+
+        case 'Movimentacoes':
+
+            break;
+    }
+
+    return resultadoRelatorio;
+}
+
 async function updateMovimentacao(jsonMovimentacao, id) {
     const valorArray = [];
     const {
@@ -196,23 +270,6 @@ async function converterJson(jsonPrincipal) {
             dataValues
         } = container;
 
-        function templateData(base) {
-            function verificaTamanhoNumero(data) { //Verifica se o numero tem apenas uma casa e atribui o zero antes dela
-                let valor = new String(data).toString();
-
-                if (valor.length === 1) return '0' + valor;
-
-                return valor;
-            }
-
-            const dataSeparada = {
-                data: `${base.getUTCFullYear()}-${verificaTamanhoNumero(base.getUTCMonth())}-${verificaTamanhoNumero(base.getUTCDate())}`,
-                hora: `${verificaTamanhoNumero(base.getUTCHours())}:${verificaTamanhoNumero(base.getUTCMinutes())}`
-            };
-
-            return dataSeparada;
-        }
-
         valorRetorno.push({ //Inclementa o valor modificado
             id: dataValues.id,
             identidadeCliente: identidade,
@@ -227,9 +284,27 @@ async function converterJson(jsonPrincipal) {
     return valorRetorno;
 }
 
+function templateData(dataConverter) {
+    function verificaTamanhoNumero(data) { //Verifica se o numero tem apenas uma casa e atribui o zero antes dela
+        let valor = new String(data).toString();
+
+        if (valor.length === 1) return '0' + valor;
+
+        return valor;
+    }
+
+    const dataSeparada = {
+        data: `${dataConverter.getUTCFullYear()}-${verificaTamanhoNumero(dataConverter.getUTCMonth())}-${verificaTamanhoNumero(dataConverter.getUTCDate())}`,
+        hora: `${verificaTamanhoNumero(dataConverter.getUTCHours())}:${verificaTamanhoNumero(dataConverter.getUTCMinutes())}`
+    };
+
+    return dataSeparada;
+}
+
 export {
     setMovimentaçao,
     getMovimentacao,
+    getMovimentacaoRelatorio,
     updateMovimentacao,
     deleteMovimentacao
 }
