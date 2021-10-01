@@ -109,14 +109,51 @@
     margin-top: 5px;
 }
 
-.labelItemRelatorio {
+.labelItemRelatorio,
+.labelDescricaoSumario {
     color: #0000ee;
     font-size: 0.8em;
 }
 
 .containerItemSecundario>.labelItemRelatorio,
-.labelDescricaoItemRelatorio {
+.labelDescricaoItemRelatorio,
+.labelValorSumario {
     color: #000;
+}
+
+/*
+
+    Sumario
+
+*/
+#containerSumario {
+    margin-top: 50px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.containerLabelSumario {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #d5d8dc;
+}
+
+.labelDescricaoSumario {
+    color: #0000ee;
+    font-size: 1em;
+}
+
+
+.labelValorSumario {
+    margin-top: 10px;
+    color: #000;
+    font-size: 1.5em;
 }
 
 /*

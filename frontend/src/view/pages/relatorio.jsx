@@ -9,6 +9,10 @@ import ResultadoCompostoRelatorio from "../components/resultadoCompostoRelatorio
 
 function Relatorio() {
     const [objetoRelatorio, setObjetoRelatorio] = useState(null);
+    const [objetoSumario, setOBjetoSumario] = useState({
+        importacao: "",
+        exportacao: ""
+    });
     const [containerRelatorio, setContainerRelatorio] = useState();
     const [containerSumario, setContainerSumario] = useState();
     const [permissaoRelatorioCliente, setPermissaoRelatorioCliente] = useState(false);
@@ -60,6 +64,8 @@ function Relatorio() {
     }
 
     function retornRelatorio(tipo) {
+        setObjetoRelatorio(null);
+
         api.get(`/movimentacao/relatorio?tipo=${tipo}`)
             .then((resultado) => {
                 if (resultado === false) return alert('Falha ao retornar relatório!');
@@ -79,18 +85,22 @@ function Relatorio() {
                 setPermissaoRelatorioMovimentacao(true);
                 break;
         }
+
+        retornaSumario();
     }
 
     function retornaSumario() {
         api.get(`/containers/relatorio`)
             .then((resultado) => {
-                if (resultado === false) return alert('Falha ao retornar relatório!');
+                if (resultado === false) return alert('Falha ao retornar relatório de importação e exportação!');
 
-                /* setObjetoRelatorio(resultado.data);
-    
-                alert('Processando Relatório!') */
+                const objetoRetorno = {
+                    importacao: resultado.data.importacao,
+                    exportacao: resultado.data.exportacao
+                }
 
-                console.log(resultado.data);
+                setOBjetoSumario(objetoRetorno);
+
             })
             .catch();
     }
@@ -117,7 +127,14 @@ function Relatorio() {
                         {containerRelatorio}
                     </div>
                     <div id="containerSumario">
-                        {containerSumario}
+                        <div className="containerLabelSumario">
+                            <label className="labelDescricaoSumario">Total de Importacao Realizada:</label>
+                            <label className="labelValorSumario">{objetoSumario.importacao}</label>
+                        </div>
+                        <div className="containerLabelSumario">
+                            <label className="labelDescricaoSumario">Total de Exportacao Realizada:</label>
+                            <label className="labelValorSumario">{objetoSumario.exportacao}</label>
+                        </div>
                     </div>
                 </div>
             </section>
