@@ -27,6 +27,7 @@ function Relatorio() {
 
     function criarRelatorioComposto(tipo) {
         const tipoObjetoRelatorio = [];
+        let arrayRetorno = [];
 
         Object.keys(objetoRelatorio).map(valueObjeto => {
 
@@ -44,29 +45,18 @@ function Relatorio() {
 
         })
 
-        switch (tipo) {
-            case 'Cliente':
+        tipoObjetoRelatorio.map(tipoInterno => {
+            Object.keys(objetoRelatorio).map(index => {
+                const objetoAtual = objetoRelatorio[index];
+                const nomeObjetoAtual = Object.keys(objetoRelatorio[index])[0]
 
-                break;
+                if (tipoInterno === nomeObjetoAtual) {
+                    arrayRetorno.push(ResultadoCompostoRelatorio(objetoAtual[nomeObjetoAtual]));
+                }
+            })
+        })
 
-            case 'Movimentacoes':
-                let arrayRetorno = [];
-
-
-                tipoObjetoRelatorio.map(tipoInterno => {
-                    Object.keys(objetoRelatorio).map(index => {
-                        const objetoAtual = objetoRelatorio[index];
-                        const nomeObjetoAtual = Object.keys(objetoRelatorio[index])[0]
-
-                        if (tipoInterno === nomeObjetoAtual) {
-                            arrayRetorno.push(ResultadoCompostoRelatorio(objetoAtual[nomeObjetoAtual]));
-                        }
-                    })
-                })
-
-                setContainerRelatorio(arrayRetorno);
-                break;
-        }
+        setContainerRelatorio(arrayRetorno);
     }
 
     function retornRelatorio(tipo) {
