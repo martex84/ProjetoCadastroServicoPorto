@@ -81,9 +81,42 @@
 
 */
 .containerItemRelatorio {
-    width: 280px;
-    height: 25px;
-    background-color: #ffff;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #d5d8dc;
+}
+
+.containerInternoRelatorio {
+    margin-top: 20px;
+}
+
+.containerPrimario {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.containerPrimario>.labelDescricaoItemRelatorio {
+    margin-top: 5px;
+}
+
+.containerItemSecundario>.labelItemRelatorio {
+    margin: 0 10px;
+}
+
+.containerSecundario>.containerItemSecundario {
+    margin-top: 5px;
+}
+
+.labelItemRelatorio {
+    color: #0000ee;
+    font-size: 0.8em;
+}
+
+.containerItemSecundario>.labelItemRelatorio,
+.labelDescricaoItemRelatorio {
+    color: #000;
 }
 
 /*
@@ -91,8 +124,8 @@
     Especializações
 
 */
-.semMargin {
-    margin: 0;
+.semMarginTop {
+    margin-top: 0;
 }
 
 .semBorda {
