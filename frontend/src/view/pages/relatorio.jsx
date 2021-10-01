@@ -81,7 +81,19 @@ function Relatorio() {
         }
     }
 
-    function retornaSumario() { }
+    function retornaSumario() {
+        api.get(`/containers/relatorio`)
+            .then((resultado) => {
+                if (resultado === false) return alert('Falha ao retornar relatório!');
+
+                /* setObjetoRelatorio(resultado.data);
+    
+                alert('Processando Relatório!') */
+
+                console.log(resultado.data);
+            })
+            .catch();
+    }
 
     return (
         <>
