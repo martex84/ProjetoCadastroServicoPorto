@@ -1,0 +1,100 @@
+/*
+
+    Seção Principal
+
+*/
+#sectionPrincipalRelatorio {
+    margin: auto;
+    width: 700px;
+}
+
+/*
+
+    Titulo Página
+
+*/
+
+#containerTituloRelatorio {
+    background-color: black;
+    padding: 20px;
+}
+
+#containerTituloRelatorio>h2 {
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+/*
+
+    Edição Informação
+
+*/
+#containerInformacaoRelatorio {
+    background-color: rgba(0, 180, 232, 0.3);
+    padding: 20px 50px;
+    border-width: 0 3px 3px 3px;
+    border-style: solid;
+    border-color: rgba(0, 180, 232, 0.15)
+}
+
+#containerBotoes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.botaoRetornaRelatorio {
+    width: 200px;
+    height: 50px;
+    border-radius: 5px;
+
+    background-color: #d5d8dc;
+    border-width: 0;
+    cursor: pointer;
+}
+
+.botaoRetornaRelatorio:hover {
+    background-color: #4285f4;
+    color: #ffff
+}
+
+.containerRelatorio {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.containerSumario {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+
+/*
+
+    Resultado Composto
+
+*/
+.containerItemRelatorio {
+    width: 280px;
+    height: 25px;
+    background-color: #ffff;
+}
+
+/*
+
+    Especializações
+
+*/
+.semMargin {
+    margin: 0;
+}
+
+.semBorda {
+    border-width: 0;
+}

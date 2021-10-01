@@ -31,19 +31,26 @@ function Relatorio() {
         <>
             <Header></Header>
             <section id="sectionPrincipalRelatorio">
-                <div id="containerBotes">
-                    <button className="botaoRetornaRelatorio" onClick={e => retornRelatorio("Cliente")}>
-                        Filtro Cliente
-                    </button>
-                    <button className="botaoRetornaRelatorio" onClick={e => retornRelatorio("Movimentacoes")}>
-                        Filtro Movimentação
-                    </button>
+                <div id="containerTituloRelatorio">
+                    <h2 className="tituloRelatorio">
+                        Gerar Relátorio
+                    </h2>
                 </div>
-                <div id="containerRelatorio">
-                    {containerRelatorio}
-                </div>
-                <div id="containerSumario">
-                    {containerSumario}
+                <div id="containerInformacaoRelatorio">
+                    <div id="containerBotoes">
+                        <button className="botaoRetornaRelatorio" onClick={e => retornRelatorio("Cliente")}>
+                            Filtro Cliente
+                        </button>
+                        <button className="botaoRetornaRelatorio" onClick={e => retornRelatorio("Movimentacoes")}>
+                            Filtro Movimentação
+                        </button>
+                    </div>
+                    <div id="containerRelatorio">
+                        {containerRelatorio}
+                    </div>
+                    <div id="containerSumario">
+                        {containerSumario}
+                    </div>
                 </div>
             </section>
             <Footer></Footer>
