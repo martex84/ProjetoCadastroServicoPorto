@@ -4,7 +4,6 @@ import container from '../model/containers.js';
 async function setContainer(jsonContainer) {
     const {
         identidadeCliente,
-        numeroContainer,
         tipo,
         status,
         categoria
@@ -18,15 +17,11 @@ async function setContainer(jsonContainer) {
         perfilCliente = await clientesServices.getFindOne(identidadeCliente);
     }
 
-    const resultadoNumeroContainer = await container.findOne({
-        where: {
-            numeroContainer: numeroContainer
-        }
-    })
+    const numeroContainer = valorArrayAleatorio("");
 
     if (resultadoNumeroContainer !== null) return false
 
-    const setContainer = await container.create({
+    /* const setContainer = await container.create({
         identidadeCliente: perfilCliente.id,
         numeroContainer: numeroContainer,
         tipo: tipo,
@@ -34,7 +29,7 @@ async function setContainer(jsonContainer) {
         categoria: categoria
     })
 
-    if (setContainer === null) return false;
+    if (setContainer === null) return false; */
 
     return true;
 
@@ -191,6 +186,48 @@ async function converterJson(jsonContainer) {
     })
 
     return valorRetorno;
+}
+
+async function atividadeNumeroContainer(valor) {
+    const alfabeto = [
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+    ];
+    const numero = [
+        '1', '2', '3', '4', '5', '6', '7', '8', '9'
+    ];
+    let numeroContainer = '';
+
+    function valorArrayAleatorio(array) {
+        const posicao = Math.floor(Math.random() * array.length);
+        return array[posicao];
+    }
+
+    if (valor === "") {
+        const palavraCerta = false;
+        do {
+            for (var i = 0; i <= 3; i++) {
+                numeroContainer = `${numeroContainer}${valorArrayAleatorio(alfabeto)}`;
+            }
+
+            for (var i = 0; i <= 6; i++) {
+                numeroContainer = `${numeroContainer}${valorArrayAleatorio(numero)}`;
+            }
+
+            const verificaPalavra = await container.findOne(
+                {
+                    numeroContainer: numeroContainer
+                }
+            )
+
+            console.log(verificaPalavra);
+
+            palavraCerta = true;
+        } while (palavraCerta === false);
+
+    }
+    else {
+
+    }
 }
 
 export {
