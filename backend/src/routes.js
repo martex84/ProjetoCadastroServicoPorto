@@ -17,8 +17,8 @@ routes.get('/containers', (req, res) => {
     return containersServices.retornGet(req.query);
 });
 
-routes.get('/containers/realatorio', (req, res) => {
-    return containersServices.retornGetRelatorio(req.query, res);
+routes.get('/containers/relatorio', (req, res) => {
+    return containersServices.retornGetRelatorio(res);
 });
 
 routes.post('/movimentacao', (req, res) => {

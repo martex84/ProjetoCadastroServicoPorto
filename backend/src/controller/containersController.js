@@ -10,10 +10,10 @@ async function retornGet(requisicao, res) {
     })
 }
 
-async function retornGetRelatorio(requisicao, res) {
+async function retornGetRelatorio(res) {
     return new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar
         resolve(
-            containersServices.getRelatorioImportacaoExportacao(requisicao)
+            containersServices.getRelatorioImportacaoExportacao()
         );
     }).then((resolve) => {
         return res.json(resolve);

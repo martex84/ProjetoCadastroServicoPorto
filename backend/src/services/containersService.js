@@ -95,8 +95,26 @@ async function getContainer(jsonContainer) {
     )
 }
 
-async function getRelatorioImportacaoExportacao(jsonContainer) {
+async function getRelatorioImportacaoExportacao() {
+    let relatorioFinal = {};
 
+    const importacao = await container.findAll({
+        where: {
+            categoria: "Importação"
+        }
+    });
+
+    const exportacao = await container.findAll({
+        where: {
+            categoria: "Exportação"
+        }
+    })
+
+    relatorioFinal.importacao = importacao.length;
+
+    relatorioFinal.exportacao = exportacao.length
+
+    return relatorioFinal;
 }
 
 async function updateContainer(jsonContainer) {
