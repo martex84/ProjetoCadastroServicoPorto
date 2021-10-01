@@ -10,15 +10,13 @@ function Relatorio() {
     const [containerRelatorio, setContainerRelatorio] = useState();
     const [containerSumario, setContainerSumario] = useState();
 
-    function retornRelatorio() {
+    function retornRelatorio(tipo) {
         api.
-            get('/movimentacoes/relatorio', (req, res) => {
-
-            })
+            get(`/movimentacao/relatorio?tipo=${tipo}`)
             .then((resultado) => {
                 if (resultado === false) return alert('Falha ao retornar relatório!');
 
-                console.log(resultado);
+                console.log(resultado.data);
 
                 /* setContainerRelatorio(resultado.data) */
 
@@ -34,10 +32,10 @@ function Relatorio() {
             <Header></Header>
             <section id="sectionPrincipalRelatorio">
                 <div id="containerBotes">
-                    <button className="botaoRetornaRelatorio">
+                    <button className="botaoRetornaRelatorio" onClick={e => retornRelatorio("Cliente")}>
                         Filtro Cliente
                     </button>
-                    <button className="botaoRetornaRelatorio">
+                    <button className="botaoRetornaRelatorio" onClick={e => retornRelatorio("Movimentacoes")}>
                         Filtro Movimentação
                     </button>
                 </div>
