@@ -10,7 +10,7 @@ import ResutadoCompostoMovimentacao from '../components/resultadoCompostoMovimen
 function Movimentacoes() {
     const [identidadeCliente, setIdentidadeCliente] = useState();
     const [numeroMovimentacao, setNumeroMovimentacao] = useState("");
-    const [tipoMovimentacao, setTipoMovimentacao] = useState();
+    const [tipoMovimentacao, setTipoMovimentacao] = useState("Descarga");
     const [dataInicio, setDataInicio] = useState();
     const [horaInicio, setHoraInicio] = useState();
     const [dataTermino, setDataTermino] = useState();
@@ -31,12 +31,11 @@ function Movimentacoes() {
 
     function limparCampos() {
         setNumeroMovimentacao("");
-        setTipoMovimentacao('Embarque');
+        setTipoMovimentacao('Descarga');
         setDataInicio("");
         setHoraInicio("");
         setDataTermino("");
         setHoraTermino("");
-
     }
 
     function criaObjetoRetornoComposto() { //Cria um array de objeto
