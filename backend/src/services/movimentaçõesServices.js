@@ -102,6 +102,7 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
     let listaPerfilId = [];
     let listaPerfilIdentidade = [];
     let resultadoRelatorio = [];
+    let objetoCliente;
 
     const listaTipoMovimentacao = [
         'Descarga', 'Embarque', 'Gate-In', 'Gate-Out', 'Pesagem', 'Reposicionamento', 'Scanner'
@@ -152,7 +153,7 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
                             dataTermino,
                         } = valor.dataValues;
 
-                        const objetoCliente = {
+                        objetoCliente = {
                             identidadeCliente: listaPerfilIdentidade[contagemIdentidade],
                             tipoMovimentacao: tipoMovimentacao,
                             dataInicio: templateData(dataInicio).data,
@@ -161,7 +162,12 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
                             horaTermino: templateData(dataTermino).hora,
                         }
 
-                        resultadoRelatorio.push(objetoCliente)
+                        let valorRetorno = {};
+
+                        valorRetorno[`${listaTipoMovimentacao[contagemIdentidade]}`] = objetoCliente;
+
+                        resultadoRelatorio.push(valorRetorno);
+
                     })
                 }
                 else {
@@ -171,7 +177,7 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
                         dataTermino,
                     } = movimentacaoResultado[0].dataValues;
 
-                    const objetoCliente = {
+                    objetoCliente = {
                         identidadeCliente: listaPerfilIdentidade[contagemIdentidade],
                         tipoMovimentacao: tipoMovimentacao,
                         dataInicio: templateData(dataInicio).data,
@@ -180,10 +186,16 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
                         horaTermino: templateData(dataTermino).hora,
                     }
 
-                    resultadoRelatorio.push(objetoCliente);
+                    let valorRetorno = {};
+
+                    valorRetorno[`${listaTipoMovimentacao[contagemIdentidade]}`] = objetoCliente;
+
+                    resultadoRelatorio.push(valorRetorno);
+
                 }
 
                 contagemIdentidade++;
+
             }
             break;
 
@@ -191,7 +203,7 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
             let contagemTipo = 0;
 
             while (contagemTipo < listaTipoMovimentacao.length) {
-                console.log(`\nContagem: ${contagemTipo} | Total:${listaTipoMovimentacao.length}`)
+
                 const movimentacaoResultado = await movimentacoes.findAll({
                     where: {
                         tipoMovimentacao: listaTipoMovimentacao[contagemTipo]
@@ -216,9 +228,9 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
                                 horaTermino: templateData(dataTermino).hora,
                             }
 
-                            const valorRetorno = {};
+                            let valorRetorno = {};
 
-                            valorRetorno[`${listaTipoMovimentacao[contagemTipo]}`] = objetoCliente;
+                            valorRetorno[`${listaTipoMovimentacao[contagemIdentidade]}`] = objetoCliente;
 
                             resultadoRelatorio.push(valorRetorno);
                         })
@@ -230,7 +242,7 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
                             dataTermino,
                         } = movimentacaoResultado[0];
 
-                        const objetoCliente = {
+                        objetoCliente = {
                             identidadeCliente: listaPerfilIdentidade[contagemIdentidade],
                             tipoMovimentacao: tipoMovimentacao,
                             dataInicio: templateData(dataInicio).data,
@@ -241,20 +253,25 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
 
                         let valorRetorno = {};
 
-                        valorRetorno[`${listaTipoMovimentacao[contagemTipo]}`] = objetoCliente;
+                        valorRetorno[`${listaTipoMovimentacao[contagemIdentidade]}`] = objetoCliente;
 
                         resultadoRelatorio.push(valorRetorno);
-                    }
 
-                    console.log("\n");
-                    console.log(resultadoRelatorio);
-                    console.log("\n");
+                    }
                 }
+
+                let valorRetorno = {};
+
+                valorRetorno[`${listaTipoMovimentacao[contagemTipo]}`] = objetoCliente;
+
+                resultadoRelatorio.push(valorRetorno);
 
                 contagemTipo++;
             }
             break;
     }
+
+    console.log(resultadoRelatorio)
 
     return resultadoRelatorio;
 }
@@ -293,8 +310,6 @@ async function updateMovimentacao(jsonMovimentacao, id) {
                 id: id
             }
         });
-
-    console.log(valorUpdate[0]);
 
     if (valorUpdate[0] !== 1) return false
 
