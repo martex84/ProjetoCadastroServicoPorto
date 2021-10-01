@@ -13,7 +13,7 @@ function App() {
       <section id="sectionPrincipal"></section>
       <Footer></Footer> */}
       {<Conteiners></Conteiners>}
-      {/* <Movimentacoes></Movimentacoes> */}
+      {/*<Movimentacoes></Movimentacoes>*/}
     </>
   );
 }

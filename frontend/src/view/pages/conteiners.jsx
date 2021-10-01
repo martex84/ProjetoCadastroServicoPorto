@@ -10,11 +10,11 @@ import ResultadoCompostoConteiner from '../components/resultadoCompostoConteiner
 function Conteiners() {
     const [identidadeCliente, setIdentidadeCliente] = useState();
     const [numeroConteiner, setNumeroConteiner] = useState("");
-    const [tipoConteiner, setTipoConteiner] = useState();
-    const [statusConteiner, setStatusConteiner] = useState();
-    const [categoriaConteiner, setCategoriaConteiner] = useState();
-    const [retornoConteiner, setRetornoMovimentacao] = useState();
-    const [permisaoRetornoConteiner, setPermisaoRetornoMovimentacao] = useState(true);
+    const [tipoConteiner, setTipoConteiner] = useState("20");
+    const [statusConteiner, setStatusConteiner] = useState("Cheio");
+    const [categoriaConteiner, setCategoriaConteiner] = useState("Importação");
+    const [retornoConteiner, setRetornoConteiner] = useState();
+    const [permisaoRetornoConteiner, setPermisaoRetornoConteiner] = useState(true);
     const [conteudoResultado, setConteudoResultado] = useState();
 
     const [opcaoTipoConteiner, setOpcaoTipoConteiner] = useState([
@@ -30,39 +30,15 @@ function Conteiners() {
     useEffect(() => {
         if (retornoConteiner !== undefined && permisaoRetornoConteiner === true) {
             criaObjetoRetornoComposto();
-            setPermisaoRetornoMovimentacao(false);
+            setPermisaoRetornoConteiner(false);
         }
     }, [retornoConteiner, permisaoRetornoConteiner])
 
-    function organizaOpcaoTipo(valor, tipo) {
-        let arrayRetorno = [valor];
-        let arrayBase = [];
-
-        switch (tipo) {
-            case "tipo":
-                opcaoTipoConteiner.forEach(opcao => {
-                    if (opcao !== valor) arrayRetorno.push(opcao)
-                })
-
-                setOpcaoTipoConteiner(arrayRetorno);
-                break;
-
-            case "status":
-                opcaoStatusConteiner.forEach(opcao => {
-                    if (opcao !== valor) arrayRetorno.push(opcao)
-                })
-
-                setOpcaoStatusConteiner(arrayRetorno);
-                break;
-
-            case "categoria":
-                opcaoCategoriaConteiner.forEach(opcao => {
-                    if (opcao !== valor) arrayRetorno.push(opcao)
-                })
-
-                setOpcaoCategoriaConteiner(arrayRetorno);
-                break;
-        }
+    function limpaCampos() {
+        setNumeroConteiner("");
+        setTipoConteiner("20");
+        setStatusConteiner("Cheio");
+        setCategoriaConteiner("Importação");
     }
 
     function criaObjetoRetornoComposto() {
@@ -110,26 +86,26 @@ function Conteiners() {
 
                     const valor = { ...response.data };
 
+                    setConteudoResultado("")
+
                     setCategoriaConteiner(valor[0].categoria);
-                    //setIdentidadeCliente(valor[0].identidadeCliente);
+                    setIdentidadeCliente(valor[0].identidadeCliente);
                     setNumeroConteiner(valor[0].numeroContainer);
                     setStatusConteiner(valor[0].status);
                     setTipoConteiner(valor[0].tipo);
 
-                    organizaOpcaoTipo(valor[0].tipo, "tipo");
+                    /* organizaOpcaoTipo(valor[0].tipo, "tipo");
                     organizaOpcaoTipo(valor[0].status, "status");
-                    organizaOpcaoTipo(valor[0].categoria, "categoria");
+                    organizaOpcaoTipo(valor[0].categoria, "categoria"); */
 
-                    if (Object.keys(valor).length > 1) {
-                        let retornoObjeto = [];
-                        Object.keys(valor).forEach(index => {
-                            if (index !== 0) {
-                                retornoObjeto.push(valor[index]);
-                            }
-                        })
-                        setRetornoMovimentacao(retornoObjeto);
-                        setPermisaoRetornoMovimentacao(true);
-                    }
+                    let retornoObjeto = [];
+                    Object.keys(valor).forEach(index => {
+                        if (index !== 0) {
+                            retornoObjeto.push(valor[index]);
+                        }
+                    })
+                    setRetornoConteiner(retornoObjeto);
+                    setPermisaoRetornoConteiner(true);
 
                 })
                 .catch(() => alert("Falha ao realizar busca!"));
@@ -145,12 +121,16 @@ function Conteiners() {
             categoria: categoriaConteiner
         }
 
-        console.log(objetoEnvio)
-
         if (verificaObjetoEmBranco(objetoEnvio) === false) {
             api
                 .post("/containers", { data: objetoEnvio })
-                .then(() => alert("Valor salvo com sucesso!"))
+                .then(() => {
+                    alert("Valor salvo com sucesso!");
+
+                    returnApiConteiner("Cliente");
+
+                    limpaCampos();
+                })
                 .catch(() => alert("Falha ao salvar valor!"));
         }
 
@@ -158,25 +138,45 @@ function Conteiners() {
 
     function updateApiConteiner() {
         const objetoEnvio = {
-
+            identidadeCliente: identidadeCliente,
+            numeroContainer: numeroConteiner,
+            tipo: tipoConteiner,
+            status: statusConteiner,
+            categoria: categoriaConteiner
         }
 
         api
-            .put(`/movimentacao/${numeroConteiner}`, { data: objetoEnvio })
-            .then(() => {
-                alert("Update Realizado com Sucesso!")
+            .put(`/containers`, { data: objetoEnvio })
+            .then((result) => {
+                if (result.data === false) return alert("Falha ao realizar Update!");
+
+                alert("Update Realizado com Sucesso!");
+
+                returnApiConteiner("Cliente");
             })
             .catch(() => alert("Falha ao realizar Update!"));
     }
 
     function deleteApiConteiner() {
         const objetoEnvio = {
+            numeroContainer: numeroConteiner,
             identidadeCliente: identidadeCliente
         }
 
         api
-            .delete(`/movimentacao/${numeroConteiner}`, { data: objetoEnvio })
-            .then(() => alert("Movimentacao apagada com sucesso!"))
+            .delete(`/containers`, { data: objetoEnvio })
+            .then((result) => {
+                if (result.data === false) return alert("Falha ao apagar movimentacao!");
+
+                alert("Movimentacao apagada com sucesso!");
+
+                if (conteudoResultado.length > 1) returnApiConteiner("Cliente");
+                else {
+                    setConteudoResultado("");
+
+                    limpaCampos("");
+                }
+            })
             .catch(() => alert("Falha ao apagar movimentacao!"));
     }
 
@@ -208,21 +208,21 @@ function Conteiners() {
                     </div>
                     <div className="containerEdicaoSecundarioConteiners">
                         <label className="labelEdicaoCategoria">Tipo Contêiners</label>
-                        <select className="inputSelectConteiners semBorda" onChange={e => setTipoConteiner(e.target.value)}>
+                        <select className="inputSelectConteiners semBorda" onChange={e => setTipoConteiner(e.target.value)} value={tipoConteiner}>
                             <option>{opcaoTipoConteiner[0]}</option>
                             <option>{opcaoTipoConteiner[1]}</option>
                         </select>
                     </div>
                     <div className="containerEdicaoSecundarioConteiners">
                         <label className="labelEdicaoCategoria">Status</label>
-                        <select className="inputSelectConteiners semBorda" onChange={e => setStatusConteiner(e.target.value)} >
+                        <select className="inputSelectConteiners semBorda" onChange={e => setStatusConteiner(e.target.value)} value={statusConteiner}>
                             <option>{opcaoStatusConteiner[0]}</option>
                             <option>{opcaoStatusConteiner[1]}</option>
                         </select>
                     </div>
                     <div className="containerEdicaoSecundarioConteiners">
                         <label className="labelEdicaoCategoria">Categoria</label>
-                        <select className="inputSelectConteiners semBorda" onChange={e => setCategoriaConteiner(e.target.value)} >
+                        <select className="inputSelectConteiners semBorda" onChange={e => setCategoriaConteiner(e.target.value)} value={categoriaConteiner}>
                             <option>{opcaoCategoriaConteiner[0]}</option>
                             <option>{opcaoCategoriaConteiner[1]}</option>
                         </select>
