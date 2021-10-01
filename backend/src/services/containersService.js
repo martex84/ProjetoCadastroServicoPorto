@@ -2,8 +2,6 @@ import * as clientesServices from './clientesServices.js';
 import container from '../model/containers.js';
 
 async function setContainer(jsonContainer) {
-    const arrayRetorno = [];
-
     const {
         identidadeCliente,
         numeroContainer,
@@ -26,9 +24,7 @@ async function setContainer(jsonContainer) {
         }
     })
 
-    if (resultadoNumeroContainer !== null) return {
-        message: "Numero de Container já cadastrado!"
-    }
+    if (resultadoNumeroContainer !== null) return false
 
     const setContainer = await container.create({
         identidadeCliente: perfilCliente.id,
@@ -38,9 +34,9 @@ async function setContainer(jsonContainer) {
         categoria: categoria
     })
 
-    arrayRetorno.push(setContainer);
+    if (setContainer === null) return false;
 
-    return converterJson(arrayRetorno);
+    return true;
 
 }
 
@@ -86,7 +82,7 @@ async function getContainer(jsonContainer) {
 
         case 'Id':
             tipoPesquisa = {
-                id: valorRecebido.identidade
+                numeroContainer: valorRecebido.identidade
             }
             break;
     }
@@ -105,8 +101,6 @@ async function getContainer(jsonContainer) {
 }
 
 async function updateContainer(jsonContainer) {
-    const arrayRetorno = [];
-
     const {
         identidadeCliente,
         numeroContainer,
@@ -117,7 +111,7 @@ async function updateContainer(jsonContainer) {
 
     const perfilCliente = await clientesServices.getFindOne(identidadeCliente);
 
-    if (perfilCliente === null) return { message: "Not Found!" };
+    if (perfilCliente === null) return false;
 
     const resultadoNumeroContainer = await container.findOne({
         where: {
@@ -126,7 +120,7 @@ async function updateContainer(jsonContainer) {
         }
     })
 
-    if (resultadoNumeroContainer === null) return { message: "Not Found!" };
+    if (resultadoNumeroContainer === null) return false;
 
     const updateContainer = await container.update({
         tipo: tipo,
@@ -149,7 +143,6 @@ async function delateContainer(jsonContainer) {
         identidadeCliente,
         numeroContainer
     } = jsonContainer;
-
     const perfilCliente = await clientesServices.getFindOne(identidadeCliente);
 
     if (perfilCliente === null) return { message: "Not Found!" };
@@ -161,7 +154,7 @@ async function delateContainer(jsonContainer) {
         }
     })
 
-    if (resultadoNumeroContainer === null) return { message: "Not Found!" };
+    if (resultadoNumeroContainer === null) return false;
 
     const delateContainer = await container.destroy({
         where: {
@@ -169,6 +162,8 @@ async function delateContainer(jsonContainer) {
             identidadeCliente: perfilCliente.id
         }
     })
+
+    console.log(delateContainer);
 
     if (delateContainer !== 1) return false;
 

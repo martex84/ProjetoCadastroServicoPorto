@@ -15,7 +15,7 @@ routes.get('/movimentacao', (req, res) => {
 });
 
 routes.get('/containers', (req, res) => {
-    new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar   
+    new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar
         resolve(
             containersServices.getContainer(req.query)
         );
@@ -78,13 +78,7 @@ routes.delete('/movimentacao/:index', (req, res) => {
             movimentacoesServices.deleteMovimentacao(req.body, index)
         )
     }).then((resolve) => {
-        if (resolve === true) return res.json({
-            messagem: "Excluido com Sucesso!"
-        });
-
-        return res.json({
-            messagem: "Falha ao Excluir!"
-        });
+        return res.json(resolve);
     })
 })
 
@@ -94,13 +88,7 @@ routes.delete('/containers', (req, res) => {
             containersServices.delateContainer(req.body)
         )
     }).then((resolve) => {
-        if (resolve === true) return res.json({
-            messagem: "Excluido com Sucesso!"
-        });
-
-        return res.json({
-            messagem: "Falha ao Excluir!"
-        });
+        return res.json(resolve);
     })
 })
 

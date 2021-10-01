@@ -1,10 +1,7 @@
-import clientes from "../model/clientes.js";
 import movimentacoes from "../model/movimentacoes.js";
 import * as clientesServices from './clientesServices.js';
 
 async function setMovimentaçao(jsonMovimentacao) {
-    const arrayValor = []; //Array para receber o valor final da movimentação
-
     const {
         identidadeCliente,
         tipoMovimentacao,
@@ -29,9 +26,8 @@ async function setMovimentaçao(jsonMovimentacao) {
         dataTermino: converterData(dataTermino, horaTermino)
     });
 
-    arrayValor.push(setMovimentacao);
 
-    return converterJson(arrayValor);
+    return true;
 }
 
 async function getMovimentacao(jsonMovimentacao) {
@@ -122,7 +118,7 @@ async function updateMovimentacao(jsonMovimentacao, id) {
 
     if (idMovimentacao === undefined) return { message: "Not Found!" };
 
-    await movimentacoes.update({
+    const valorUpdate = await movimentacoes.update({
         tipoMovimentacao: tipoMovimentacao,
         dataInicio: converterData(dataInicio, horaInicio),
         dataTermino: converterData(dataTermino, horaTermino)
@@ -133,11 +129,11 @@ async function updateMovimentacao(jsonMovimentacao, id) {
             }
         });
 
-    const valorUpdate = await movimentacoes.findByPk(id);
+    console.log(valorUpdate[0]);
 
-    valorArray.push(valorUpdate);
+    if (valorUpdate[0] !== 1) return false
 
-    return converterJson(valorArray)
+    return true
 }
 
 async function deleteMovimentacao(jsonMovimentacao, id) {
