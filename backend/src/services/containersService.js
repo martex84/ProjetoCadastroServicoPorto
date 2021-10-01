@@ -180,8 +180,6 @@ async function delateContainer(jsonContainer) {
         }
     })
 
-    console.log(delateContainer);
-
     if (delateContainer !== 1) return false;
 
     return true
