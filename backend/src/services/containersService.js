@@ -17,11 +17,11 @@ async function setContainer(jsonContainer) {
         perfilCliente = await clientesServices.getFindOne(identidadeCliente);
     }
 
-    const numeroContainer = valorArrayAleatorio("");
+    const numeroContainer = await atividadeNumeroContainer("");
 
-    if (resultadoNumeroContainer !== null) return false
+    if (numeroContainer === false) return false
 
-    /* const setContainer = await container.create({
+    const setContainer = await container.create({
         identidadeCliente: perfilCliente.id,
         numeroContainer: numeroContainer,
         tipo: tipo,
@@ -29,7 +29,7 @@ async function setContainer(jsonContainer) {
         categoria: categoria
     })
 
-    if (setContainer === null) return false; */
+    if (setContainer === null) return false;
 
     return true;
 
@@ -196,6 +196,7 @@ async function atividadeNumeroContainer(valor) {
         '1', '2', '3', '4', '5', '6', '7', '8', '9'
     ];
     let numeroContainer = '';
+    let contagem = 0;
 
     function valorArrayAleatorio(array) {
         const posicao = Math.floor(Math.random() * array.length);
@@ -203,8 +204,9 @@ async function atividadeNumeroContainer(valor) {
     }
 
     if (valor === "") {
-        const palavraCerta = false;
+        let palavraCerta = false;
         do {
+            numeroContainer = '';
             for (var i = 0; i <= 3; i++) {
                 numeroContainer = `${numeroContainer}${valorArrayAleatorio(alfabeto)}`;
             }
@@ -213,16 +215,22 @@ async function atividadeNumeroContainer(valor) {
                 numeroContainer = `${numeroContainer}${valorArrayAleatorio(numero)}`;
             }
 
-            const verificaPalavra = await container.findOne(
+            const verificaPalavra = await container.findOne({
+                where:
                 {
                     numeroContainer: numeroContainer
                 }
-            )
+            })
 
-            console.log(verificaPalavra);
+            if (verificaPalavra === null) palavraCerta = true;
 
-            palavraCerta = true;
-        } while (palavraCerta === false);
+            contagem++;
+
+        } while (palavraCerta === false || contagem === 1000);
+
+        if (palavraCerta === false) return false;
+
+        return numeroContainer;
 
     }
     else {

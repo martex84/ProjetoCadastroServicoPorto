@@ -115,7 +115,6 @@ function Conteiners() {
     function setApiConteiner() {
         const objetoEnvio = {
             identidadeCliente: identidadeCliente,
-            numeroContainer: numeroConteiner,
             tipo: tipoConteiner,
             status: statusConteiner,
             categoria: categoriaConteiner
