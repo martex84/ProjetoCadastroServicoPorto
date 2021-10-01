@@ -103,37 +103,40 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
     let listaPerfilIdentidade = [];
     let resultadoRelatorio = [];
 
+    const listaTipoMovimentacao = [
+        'Descarga', 'Embarque', 'Gate-In', 'Gate-Out', 'Pesagem', 'Reposicionamento', 'Scanner'
+    ];
+
+    const perfilCliente = await movimentacoes.findAll(); //Salva todos os id de clientes
+
+    perfilCliente.map(valor => {
+        const id = valor.dataValues.identidadeCliente;
+
+        if (listaPerfilId.length === 0) listaPerfilId.push(id);
+
+        else {
+            listaPerfilId.map(idPerfil => {
+                if (id !== idPerfil) listaPerfilId.push(id);
+            })
+        }
+    })
+
+    let contagemIdentidade = 0;
+
+    while (contagemIdentidade < listaPerfilId.length) { //Salva todas as identidades usadas
+
+        const valor = await clientesServices.getFindById(listaPerfilId[contagemIdentidade])
+
+        listaPerfilIdentidade.push(valor.identidade)
+
+        contagemIdentidade++;
+    }
+
+    contagemIdentidade = 0;
+
+
     switch (tipo) {
         case 'Cliente':
-            const perfilCliente = await movimentacoes.findAll();
-
-            perfilCliente.map(valor => {
-                const id = valor.dataValues.identidadeCliente;
-
-                if (listaPerfilId.length === 0) listaPerfilId.push(id);
-
-                else {
-                    listaPerfilId.map(idPerfil => {
-                        if (id !== idPerfil) listaPerfilId.push(id);
-                    })
-                }
-            })
-
-            let contagemIdentidade = 0;
-
-            while (contagemIdentidade < listaPerfilId.length) {
-
-                const valor = await clientesServices.getFindById(listaPerfilId[contagemIdentidade])
-
-                listaPerfilIdentidade.push(valor.identidade)
-
-                contagemIdentidade++;
-            }
-
-            contagemIdentidade = 0;
-
-
-
             while (contagemIdentidade < listaPerfilIdentidade.length) {
                 const movimentacaoResultado = await movimentacoes.findAll({
                     where: {
@@ -185,7 +188,71 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
             break;
 
         case 'Movimentacoes':
+            let contagemTipo = 0;
 
+            while (contagemTipo < listaTipoMovimentacao.length) {
+                console.log(`\nContagem: ${contagemTipo} | Total:${listaTipoMovimentacao.length}`)
+                const movimentacaoResultado = await movimentacoes.findAll({
+                    where: {
+                        tipoMovimentacao: listaTipoMovimentacao[contagemTipo]
+                    }
+                })
+
+                if (movimentacaoResultado.length > 0) {
+                    if (movimentacaoResultado.length > 1) {
+                        movimentacaoResultado.map(valor => {
+                            const {
+                                tipoMovimentacao,
+                                dataInicio,
+                                dataTermino,
+                            } = valor.dataValues;
+
+                            const objetoCliente = {
+                                identidadeCliente: listaPerfilIdentidade[contagemIdentidade],
+                                tipoMovimentacao: tipoMovimentacao,
+                                dataInicio: templateData(dataInicio).data,
+                                horaInicio: templateData(dataInicio).hora,
+                                dataTermino: templateData(dataTermino).data,
+                                horaTermino: templateData(dataTermino).hora,
+                            }
+
+                            const valorRetorno = {};
+
+                            valorRetorno[`${listaTipoMovimentacao[contagemTipo]}`] = objetoCliente;
+
+                            resultadoRelatorio.push(valorRetorno);
+                        })
+                    }
+                    else {
+                        const {
+                            tipoMovimentacao,
+                            dataInicio,
+                            dataTermino,
+                        } = movimentacaoResultado[0];
+
+                        const objetoCliente = {
+                            identidadeCliente: listaPerfilIdentidade[contagemIdentidade],
+                            tipoMovimentacao: tipoMovimentacao,
+                            dataInicio: templateData(dataInicio).data,
+                            horaInicio: templateData(dataInicio).hora,
+                            dataTermino: templateData(dataTermino).data,
+                            horaTermino: templateData(dataTermino).hora,
+                        }
+
+                        let valorRetorno = {};
+
+                        valorRetorno[`${listaTipoMovimentacao[contagemTipo]}`] = objetoCliente;
+
+                        resultadoRelatorio.push(valorRetorno);
+                    }
+
+                    console.log("\n");
+                    console.log(resultadoRelatorio);
+                    console.log("\n");
+                }
+
+                contagemTipo++;
+            }
             break;
     }
 
