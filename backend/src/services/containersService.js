@@ -95,6 +95,10 @@ async function getContainer(jsonContainer) {
     )
 }
 
+async function getRelatorioImportacaoExportacao(jsonContainer) {
+
+}
+
 async function updateContainer(jsonContainer) {
     const {
         identidadeCliente,
@@ -242,5 +246,6 @@ export {
     setContainer,
     getContainer,
     updateContainer,
-    delateContainer
+    delateContainer,
+    getRelatorioImportacaoExportacao
 }

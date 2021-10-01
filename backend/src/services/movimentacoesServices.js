@@ -271,8 +271,6 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
             break;
     }
 
-    console.log(resultadoRelatorio)
-
     return resultadoRelatorio;
 }
 

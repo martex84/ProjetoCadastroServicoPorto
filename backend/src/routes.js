@@ -1,105 +1,48 @@
 import { Router } from "express";
-import { resolve } from "path/posix";
 
-import * as movimentacoesServices from './services/movimentaçõesServices.js';
-import * as containersServices from './services/containersService.js'
+import * as movimentacoesServices from './controller/movimentacoesController.js';
+import * as containersServices from './controller/containersController.js'
 
 const routes = Router();
 
 routes.get('/movimentacao', (req, res) => {
-    new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar       
-        resolve(movimentacoesServices.getMovimentacao(req.query));
-    }).then((resolve) => {
-        return res.json(resolve);
-    })
+    return movimentacoesServices.retornGet(req.query, res)
 });
 
 routes.get('/movimentacao/relatorio', (req, res) => {
-    new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar
-        resolve(
-            movimentacoesServices.getMovimentacaoRelatorio(req.query)
-        );
-    }).then((resolve) => {
-        return res.json(resolve);
-    })
+    return movimentacoesServices.retornGetRelatorio(req.query, res)
 });
 
 routes.get('/containers', (req, res) => {
-    new Promise((resolve, reject) => { //Com a promise será possível esperar a resposta chegar
-        resolve(
-            containersServices.getContainer(req.query)
-        );
-    }).then((resolve) => {
-        return res.json(resolve);
-    })
+    return containersServices.retornGet(req.query);
+});
+
+routes.get('/containers/realatorio', (req, res) => {
+    return containersServices.retornGetRelatorio(req.query, res);
 });
 
 routes.post('/movimentacao', (req, res) => {
-    new Promise((resolve, reject) => {
-        resolve(
-            movimentacoesServices.setMovimentaçao(req.body.data)
-        )
-    }).then((resolve) => {
-        return res.json(resolve);
-    })
-})
+    return movimentacoesServices.retornPost(req.body.data, res);
+});
 
 routes.post('/containers', (req, res) => {
-    new Promise((resolve, reject) => {
-        resolve(
-            containersServices.setContainer(req.body.data)
-        )
-    }).then((resolve) => {
-        return res.json(resolve);
-    })
-})
+    return containersServices.retornPost(req.body.data, res);
+});
 
 routes.put('/movimentacao/:index', (req, res) => {
-    new Promise((resolve, reject) => {
-        const {
-            index
-        } = req.params;
-
-        resolve(
-            movimentacoesServices.updateMovimentacao(req.body.data, index)
-        )
-    }).then((resolve) => {
-        return res.json(resolve);
-    })
-})
+    return movimentacoesServices.retornPut(req.body.data, req.params, res);
+});
 
 routes.put('/containers', (req, res) => {
-    new Promise((resolve, reject) => {
-        resolve(
-            containersServices.updateContainer(req.body.data)
-        )
-    }).then((resolve) => {
-        return res.json(resolve);
-    })
-})
+    return containersServices.retornPut(req.body.data, res);
+});
 
 routes.delete('/movimentacao/:index', (req, res) => {
-    new Promise((resolve, reject) => {
-        const {
-            index
-        } = req.params;
-
-        resolve(
-            movimentacoesServices.deleteMovimentacao(req.body, index)
-        )
-    }).then((resolve) => {
-        return res.json(resolve);
-    })
-})
+    return movimentacoesServices.retornDelete(req.body, req.params, res);
+});
 
 routes.delete('/containers', (req, res) => {
-    new Promise((resolve, reject) => {
-        resolve(
-            containersServices.delateContainer(req.body)
-        )
-    }).then((resolve) => {
-        return res.json(resolve);
-    })
-})
+    return containersServices.delateContainer(req.body, res);
+});
 
 export default routes;
