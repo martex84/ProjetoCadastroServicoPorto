@@ -156,10 +156,10 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
                         objetoCliente = {
                             identidadeCliente: listaPerfilIdentidade[contagemIdentidade],
                             tipoMovimentacao: tipoMovimentacao,
-                            dataInicio: templateData(dataInicio).data,
-                            horaInicio: templateData(dataInicio).hora,
-                            dataTermino: templateData(dataTermino).data,
-                            horaTermino: templateData(dataTermino).hora,
+                            dataInicio: templateDataAtual(dataInicio).data,
+                            horaInicio: templateDataAtual(dataInicio).hora,
+                            dataTermino: templateDataAtual(dataTermino).data,
+                            horaTermino: templateDataAtual(dataTermino).hora,
                         }
 
                         let valorRetorno = {};
@@ -180,10 +180,10 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
                     objetoCliente = {
                         identidadeCliente: listaPerfilIdentidade[contagemIdentidade],
                         tipoMovimentacao: tipoMovimentacao,
-                        dataInicio: templateData(dataInicio).data,
-                        horaInicio: templateData(dataInicio).hora,
-                        dataTermino: templateData(dataTermino).data,
-                        horaTermino: templateData(dataTermino).hora,
+                        dataInicio: templateDataAtual(dataInicio).data,
+                        horaInicio: templateDataAtual(dataInicio).hora,
+                        dataTermino: templateDataAtual(dataTermino).data,
+                        horaTermino: templateDataAtual(dataTermino).hora,
                     }
 
                     let valorRetorno = {};
@@ -222,10 +222,10 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
                             const objetoCliente = {
                                 identidadeCliente: listaPerfilIdentidade[contagemIdentidade],
                                 tipoMovimentacao: tipoMovimentacao,
-                                dataInicio: templateData(dataInicio).data,
-                                horaInicio: templateData(dataInicio).hora,
-                                dataTermino: templateData(dataTermino).data,
-                                horaTermino: templateData(dataTermino).hora,
+                                dataInicio: templateDataAtual(dataInicio).data,
+                                horaInicio: templateDataAtual(dataInicio).hora,
+                                dataTermino: templateDataAtual(dataTermino).data,
+                                horaTermino: templateDataAtual(dataTermino).hora,
                             }
 
                             let valorRetorno = {};
@@ -245,10 +245,10 @@ async function getMovimentacaoRelatorio(jsonMovimentacao) {
                         objetoCliente = {
                             identidadeCliente: listaPerfilIdentidade[contagemIdentidade],
                             tipoMovimentacao: tipoMovimentacao,
-                            dataInicio: templateData(dataInicio).data,
-                            horaInicio: templateData(dataInicio).hora,
-                            dataTermino: templateData(dataTermino).data,
-                            horaTermino: templateData(dataTermino).hora,
+                            dataInicio: templateDataAtual(dataInicio).data,
+                            horaInicio: templateDataAtual(dataInicio).hora,
+                            dataTermino: templateDataAtual(dataTermino).data,
+                            horaTermino: templateDataAtual(dataTermino).hora,
                         }
 
                         let valorRetorno = {};
@@ -399,6 +399,23 @@ function templateData(dataConverter) {
 
     const dataSeparada = {
         data: `${dataConverter.getUTCFullYear()}-${verificaTamanhoNumero(dataConverter.getUTCMonth())}-${verificaTamanhoNumero(dataConverter.getUTCDate())}`,
+        hora: `${verificaTamanhoNumero(dataConverter.getUTCHours())}:${verificaTamanhoNumero(dataConverter.getUTCMinutes())}`
+    };
+
+    return dataSeparada;
+}
+
+function templateDataAtual(dataConverter) {
+    function verificaTamanhoNumero(data) { //Verifica se o numero tem apenas uma casa e atribui o zero antes dela
+        let valor = new String(data).toString();
+
+        if (valor.length === 1) return '0' + valor;
+
+        return valor;
+    }
+
+    const dataSeparada = {
+        data: `${verificaTamanhoNumero(dataConverter.getUTCDate())}/${verificaTamanhoNumero(dataConverter.getUTCMonth())}/${dataConverter.getUTCFullYear()}`,
         hora: `${verificaTamanhoNumero(dataConverter.getUTCHours())}:${verificaTamanhoNumero(dataConverter.getUTCMinutes())}`
     };
 
