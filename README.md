@@ -51,3 +51,8 @@ Para realizar a instalação deve ser realizado os seguintes passos
 ## Erros
 1. Um possível erro que possa ocorrer é no cadastro da movimentação, onde se não selecionar um valor para o tipo além do padrão, ele iria acusar que está em branco, para resolver isso deve clicar em outro e clicar novamente no primeiro caso desejar;
 2. Se caso excluir o banco de dados com servidor em funcionamento pode apresentar um erro, devendo finalizar o servidor e rodar novamente para realizar a criação das tabelas;
+
+## Requisitos
+1. O sistema utiliza o banco de dados Mysql, dessa forma é necessário que tenho o seu servidor instalado na máquina;
+2. Dentro do sistema no arquivo "database/connection.js", na variável "database" está todas as configurações necessárias para rodar o banco de dados;
+3. Pode ser necessário mudar o usuário e senha do banco para realizar a conexão;
